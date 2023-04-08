@@ -1,57 +1,55 @@
 import { BOOLEAN, Model, INTEGER } from 'sequelize';
 import db from '.';
-import TeamModel from './TeamModel';
+// import TeamModel from './TeamModel';
 
-class Matches extends Model {
+export default class Matches extends Model {
   declare id: number;
-  declare matchesName: string;
+  declare homeTeamId: number;
+  declare homeTeamGoals: number;
+  declare awayTeamId: number;
+  declare awayTeamGoals: number;
+  declare inProgess: number;
 }
 
 Matches.init({
   id: {
     type: INTEGER,
     allowNull: false,
-    primaryKey: true,
     autoIncrement: true,
+    primaryKey: true,
   },
-
   homeTeamId: {
     type: INTEGER,
-    allowNull: false,
     field: 'home_team_id',
+    references: {
+      model: 'teams',
+      key: 'id',
+    },
   },
-
   homeTeamGoals: {
     type: INTEGER,
-    allowNull: false,
     field: 'home_team_goals',
   },
-
   awayTeamId: {
     type: INTEGER,
-    allowNull: false,
-    field: 'away_team_id',
+    field: 'awya_team_id',
+    references: {
+      model: 'teams',
+      key: 'id',
+    },
   },
-
   awayTeamGoals: {
     type: INTEGER,
-    allowNull: false,
-    field: 'away_team_goals',
+    field: 'away_tem_goals',
   },
-
-  inProgress: {
+  inProgess: {
     type: BOOLEAN,
-    allowNull: false,
     field: 'in_progress',
   },
-}, {
 
+}, {
   sequelize: db,
-  modelName: 'matches',
+  underscored: true,
+  tableName: 'matches',
   timestamps: false,
 });
-
-Matches.belongsTo(TeamModel, { foreignKey: 'homeTeamId' as 'homeTeam' });
-Matches.belongsTo(TeamModel, { foreignKey: 'awayTeamId' as 'awayTeam' });
-
-export default Matches;

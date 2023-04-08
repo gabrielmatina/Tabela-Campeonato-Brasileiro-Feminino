@@ -9,11 +9,11 @@ module.exports = {
         autoIncrement: true,
         primaryKey: true,
       }, team_name: {
+        allowNull: false,
         type: Sequelize.STRING
       }
     });
   },
-
   down: async (queryInterface) => {
     await queryInterface.dropTable('teams');
   },
