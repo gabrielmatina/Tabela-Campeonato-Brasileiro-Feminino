@@ -18,9 +18,11 @@ const loginValidade = async (user: ILogin) => {
   return { token };
 };
 
-const getId = async (id: number) => {
+/* const getId = async (id: number) => {
   const time = await UserModel.findByPk(id);
   return time;
-};
+}; */
 
-export { loginValidade, getId };
+const userService = { loginValidade };
+
+export default userService;

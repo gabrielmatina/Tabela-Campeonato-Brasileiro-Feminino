@@ -1,6 +1,6 @@
 import * as sinon from 'sinon';
 import * as chai from 'chai';
-import { adminUser } from './Mock/userMock.test';
+import { user } from './Mock/userMock.test';
 import { IUser } from '../database/interfaces/User';
 // @ts-ignore
 import chaiHttp = require('chai-http');
@@ -15,74 +15,61 @@ const { expect } = chai;
 describe('Test router User', () => {
 
   let chaiHttpResponse: Response;
+  beforeEach(sinon.restore)
 
   it('Check login and password fields are filled in.', async () => {
     chaiHttpResponse = await chai
-      .request(app).get('/users').send({
-        "login": null,
-        "password": "123456"
+      .request(app).post('/login').send({
+        "email": "admin123@admin.com",
+        "password": "secret_admin"
       });
 
-    expect(chaiHttpResponse.status).to.equal(400);
-    expect(chaiHttpResponse.body).to.be.deep.equal({ "message": "All fields must be filled" });
+    expect(chaiHttpResponse.status).to.be.equal(401);
+    expect(chaiHttpResponse.body).to.be.deep.equal({ "message": "Invalid email or password" });
   });
 
-  it('Check password field is filled in.', async () => {
+  it('Check login and password fields are filled in.', async () => {
     chaiHttpResponse = await chai
-      .request(app).get('/users').send({
-        "login": "teste@teste.com",
-        "password": null
+      .request(app).post('/login').send({
+        "email": "admin@admin.com",
+        "password": "incorrect"
       });
 
-    expect(chaiHttpResponse.status).to.equal(400);
+    expect(chaiHttpResponse.status).to.be.equal(401);
+    expect(chaiHttpResponse.body).to.be.deep.equal({ "message": "Invalid email or password" });
+  });
+
+  it('Check login and password fields are filled in.', async () => {
+    chaiHttpResponse = await chai
+      .request(app).post('/login').send({
+        "email": null,
+        "password": null,
+      });
+
+    expect(chaiHttpResponse.status).to.be.equal(400);
     expect(chaiHttpResponse.body).to.be.deep.equal({ "message": "All fields must be filled" });
   });
 
   it('Check login and password field is invalid.', async () => {
     chaiHttpResponse = await chai
-      .request(app).get('/users').send({
-        "login": "admin@admin.com",
-        "password": "123456"
+      .request(app).post('/login').send({
+        "email": "admin@admin.com",
+        "password": "123"
       });
 
-    expect(chaiHttpResponse.status).to.equal(400);
+    expect(chaiHttpResponse.status).to.be.equal(401);
     expect(chaiHttpResponse.body).to.be.deep.equal({ "message": "Invalid email or password" });
   });
 
-  it.skip('Check token is returned when loggin.', async () => {
-    sinon
-      .stub(usersModel, "findOne")
-      .resolves(adminUser[0]);
+  it('Check token is returned when login.', async () => {
+
     chaiHttpResponse = await chai
-      .request(app).get('/users').send({
-        "login": "admin@admin.com",
+      .request(app).post('/login').send({
+        "email": "admin@admin.com",
         "password": "secret_admin"
       });
 
-    expect(chaiHttpResponse.status).to.equal(400);
-    expect(chaiHttpResponse.body).to.be.deep.equal({ "token": "" });
+    expect(chaiHttpResponse.status).to.be.equal(200);
   });
 
-  it('Check the email is invalid.', async () => {
-    chaiHttpResponse = await chai
-      .request(app).get('/users').send({
-        "login": "@teste.com",
-        "password": "123456"
-      });
-
-    expect(chaiHttpResponse.status).to.equal(400);
-    expect(chaiHttpResponse.body).to.be.deep.equal({ "message": "Invalid email or password" });
-  });
-
-  it('Check the password field has 6 or more characters.', async () => {
-    chaiHttpResponse = await chai
-      .request(app).get('/users').send({
-        "login": "admin@admin.com",
-        "password": "1234"
-      });
-
-    expect(chaiHttpResponse.status).to.equal(400);
-    expect(chaiHttpResponse.body).to.be.deep.equal({ "message": "Invalid email or password" });
-  });
-  
 });
