@@ -4,19 +4,13 @@ import Teams from '../models/TeamModel';
 const allMatches = async () => {
   const resultAllMatches = await Matches.findAll({
     include: [
-      { model: Teams, as: 'homeTeam', attributes: { exclude: ['id'] } },
-      { model: Teams, as: 'awayTeam', attributes: { exclude: ['id'] } },
+      { model: Teams, as: 'homeTeam', attributes: ['teamName'] },
+      { model: Teams, as: 'awayTeam', attributes: ['teamName'] },
     ],
   });
   return resultAllMatches;
 };
 
-const onlyMatch = async () => {
-  const test = console.log('Test');
-  return test;
-};
+const MatchesService = { allMatches };
 
-export {
-  allMatches,
-  onlyMatch,
-};
+export default MatchesService;
