@@ -16,6 +16,15 @@ const allMatches = async (req: Request, res: Response) => {
   return res.status(200).json(result);
 };
 
-const MatchesController = { allMatches };
+const matchFinish = async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const result = await MatchesService.matchFinish(+id);
+  if (result === null) {
+    return res.status(200).json({ message: 'Finished' });
+  }
+  return result;
+};
+
+const MatchesController = { allMatches, matchFinish };
 
 export default MatchesController;

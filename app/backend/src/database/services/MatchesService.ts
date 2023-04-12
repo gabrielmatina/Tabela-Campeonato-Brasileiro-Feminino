@@ -11,6 +11,14 @@ const allMatches = async () => {
   return resultAllMatches;
 };
 
-const MatchesService = { allMatches };
+const matchFinish = async (id: number) => {
+  try {
+    await Matches.update({ inProgress: false }, { where: { id } });
+  } catch (error) {
+    return error;
+  }
+};
+
+const MatchesService = { allMatches, matchFinish };
 
 export default MatchesService;
