@@ -18,6 +18,12 @@ const loginValidade = async (user: ILogin) => {
   return { token };
 };
 
-const userService = { loginValidade };
+const getRole = async (email: string) => {
+  const user = await UserModel.findOne({ where: { email } });
+  const role = user?.role;
+  return { role };
+};
+
+const userService = { loginValidade, getRole };
 
 export default userService;

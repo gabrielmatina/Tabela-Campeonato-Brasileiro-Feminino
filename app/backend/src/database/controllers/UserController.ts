@@ -14,7 +14,8 @@ const login = async (req: Request, res: Response) => {
 
 const role = async (req: Request, res: Response) => {
   const data = req.body;
-  return res.status(200).json({ role: data.user.role });
+  const onlyRole = await userService.getRole(data.email);
+  return res.status(200).json({ onlyRole });
 };
 
 export { login, role };
