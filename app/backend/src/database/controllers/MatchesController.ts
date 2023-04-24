@@ -25,6 +25,27 @@ const matchFinish = async (req: Request, res: Response) => {
   return result;
 };
 
-const MatchesController = { allMatches, matchFinish };
+const matchesUpdate = async (req: Request, res: Response) => {
+  const { id } = req.params;
+  const { homeTeamGoals, awayTeamGoals } = req.body;
+  const result = await MatchesService.matchesUpdate(+id, homeTeamGoals, awayTeamGoals);
+  if (result) {
+    return res.status(200).json({ message: 'Matche Updated' });
+  }
+  return res.status(500).json({ message: 'erro updated' });
+};
+
+const newMacht = async (req: Request, res: Response) => {
+  const result = req.body;
+  const resultMatche = await MatchesService.matchesCreate(result);
+  return res.status(201).json(resultMatche);
+};
+
+const MatchesController = {
+  allMatches,
+  matchFinish,
+  matchesUpdate,
+  newMacht,
+};
 
 export default MatchesController;

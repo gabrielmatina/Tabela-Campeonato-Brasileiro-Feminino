@@ -1,5 +1,6 @@
 import Matches from '../models/MatchesModel';
 import Teams from '../models/TeamModel';
+import { IMatch } from '../interfaces/Matches';
 
 const allMatches = async () => {
   const resultAllMatches = await Matches.findAll({
@@ -22,6 +23,40 @@ const matchFinish = async (id: number) => {
   }
   return 'Finished';
 };
-const MatchesService = { allMatches, matchFinish };
+
+const matchesUpdate = async (id: number, homeTeamGoals: number, awayTeamGoals: number) => {
+  try {
+    const result = await Matches.update(
+      {
+        homeTeamGoals,
+        awayTeamGoals,
+      },
+      { where: { id } },
+    );
+    return result;
+  } catch (error) {
+    return null;
+  }
+};
+
+const matchesCreate = async (date: IMatch) => {
+  const { homeTeamId, awayTeamId, homeTeamGoals, awayTeamGoals } = date;
+  const newMacth = await Matches.create({
+    homeTeamId,
+    awayTeamId,
+    homeTeamGoals,
+    awayTeamGoals,
+    inProgress: true,
+  });
+
+  return newMacth;
+};
+
+const MatchesService = {
+  allMatches,
+  matchFinish,
+  matchesUpdate,
+  matchesCreate,
+};
 
 export default MatchesService;

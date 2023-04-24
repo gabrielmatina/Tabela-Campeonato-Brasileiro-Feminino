@@ -12,10 +12,11 @@ const login = async (req: Request, res: Response) => {
   return res.status(200).json(validation);
 };
 
-const role = async (req: Request, res: Response) => {
-  const data = req.body;
-  const onlyRole = await userService.getRole(data.email);
-  return res.status(200).json({ onlyRole });
+const userRole = async (req: Request, res: Response) => {
+  const data = res.locals;
+  const { role } = data.payload;
+  console.log(role);
+  return res.status(200).json({ role });
 };
 
-export { login, role };
+export { login, userRole };

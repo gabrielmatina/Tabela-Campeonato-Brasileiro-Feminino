@@ -3,13 +3,12 @@ import Token from '../utils/Token';
 
 const validation = (req: Request, res: Response, next: NextFunction) => {
   const getToken = req.header('authorization');
-  const { email } = req.body;
   if (!getToken) {
     return res.status(401).json({ message: 'Token not found' });
   }
   try {
-    Token.tokenGeneration(email);
-    return res.status(200).json({ message: 'Funcionou' });
+    const result = Token.tokenVerification(getToken);
+    res.locals.payload = result;
     next();
   } catch (error) {
     return res.status(401).json({ message: 'Token must be a valid token' });
