@@ -6,10 +6,11 @@ import tokenValidation from '../middlewares/TokenValidade';
 const router = express.Router();
 
 router.get('/', MatchesController.allMatches);
-router.get(
+router.patch(
   '/:id/finish',
   Token.tokenVerification,
   tokenValidation,
+  MatchesController.matchFinish,
 );
 
 export default router;

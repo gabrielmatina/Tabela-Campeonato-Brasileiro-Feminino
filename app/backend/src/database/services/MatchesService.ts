@@ -12,13 +12,16 @@ const allMatches = async () => {
 };
 
 const matchFinish = async (id: number) => {
-  try {
-    await Matches.update({ inProgress: false }, { where: { id } });
-  } catch (error) {
-    return error;
+  const result = await Matches.update(
+    { inProgress: false },
+    { where: { id } },
+  );
+  // result[0] === 0 ? `Match not found` : `Finished`;
+  if (result[0] === 0) {
+    return 'Match not found';
   }
+  return 'Finished';
 };
-
 const MatchesService = { allMatches, matchFinish };
 
 export default MatchesService;
