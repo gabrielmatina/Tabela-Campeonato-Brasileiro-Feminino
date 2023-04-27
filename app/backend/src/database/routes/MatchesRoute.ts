@@ -16,6 +16,10 @@ router.patch(
   tokenValidation,
   MatchesController.matchesUpdate,
 );
-router.post('/', tokenValidation, MatchesController.newMacht);
+router.post(
+  '/',
+  tokenValidation,
+  MatchesController.newMatch,
+);
 
 export default router;
