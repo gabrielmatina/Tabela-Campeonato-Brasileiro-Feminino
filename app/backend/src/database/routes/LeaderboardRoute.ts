@@ -13,4 +13,9 @@ router.get(
   leaderboardController.getLederboardAway,
 );
 
+router.get(
+  '/',
+  leaderboardController.getLederboardTotal,
+);
+
 export default router;
