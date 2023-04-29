@@ -5,7 +5,16 @@ import validaToken from '../middlewares/TokenValidade';
 
 const router = express.Router();
 
-router.post('/', FieldsValidate, UserController.login);
-router.get('/role', validaToken, UserController.userRole);
+router.post(
+  '/',
+  FieldsValidate,
+  UserController.login,
+);
+
+router.get(
+  '/role',
+  validaToken,
+  UserController.userRole,
+);
 
 export default router;

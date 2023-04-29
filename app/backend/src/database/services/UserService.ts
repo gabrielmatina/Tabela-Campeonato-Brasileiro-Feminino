@@ -24,6 +24,9 @@ const getRole = async (email: string) => {
   return { role };
 };
 
-const userService = { loginValidade, getRole };
+const userService = {
+  loginValidade,
+  getRole,
+};
 
 export default userService;
