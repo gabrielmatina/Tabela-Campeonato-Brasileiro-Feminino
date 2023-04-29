@@ -19,4 +19,6 @@ const userRole = async (req: Request, res: Response) => {
   return res.status(200).json({ role });
 };
 
-export { login, userRole };
+const UserController = { login, userRole };
+
+export default UserController;

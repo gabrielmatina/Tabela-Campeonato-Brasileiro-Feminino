@@ -10,7 +10,9 @@ const onlyTeam = async (id: number) => {
   return oneTeam;
 };
 
-export {
+const TeamService = {
   allTeams,
   onlyTeam,
 };
+
+export default TeamService;

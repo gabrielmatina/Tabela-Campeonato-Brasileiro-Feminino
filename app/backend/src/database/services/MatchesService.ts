@@ -2,7 +2,7 @@ import NotFoundError from '../../Errors/NotFoundError';
 import Matches from '../models/MatchesModel';
 import Teams from '../models/TeamModel';
 import { IMatch } from '../interfaces/Matches';
-import { onlyTeam } from './TeamService';
+import TeamService from './TeamService';
 import UnprocessableError from '../../Errors/UnprocessableError';
 
 const allMatches = async () => {
@@ -40,8 +40,8 @@ const matchesUpdate = async (id: number, homeTeamGoals: number, awayTeamGoals: n
 
 const matchesCreate = async (date: IMatch) => {
   const { homeTeamId, awayTeamId, homeTeamGoals, awayTeamGoals } = date;
-  const homeTeam = await onlyTeam(homeTeamId);
-  const awayTeam = await onlyTeam(awayTeamId);
+  const homeTeam = await TeamService.onlyTeam(homeTeamId);
+  const awayTeam = await TeamService.onlyTeam(awayTeamId);
   if (!homeTeam || !awayTeam) {
     throw new NotFoundError('There is no team with such id!');
   }
